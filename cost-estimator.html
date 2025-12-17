@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cost Estimator - Evolved</title>
+    <link rel="icon" type="image/png" href="assets/Logo.png">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo-section">
+                <img src="assets/Logo.svg" alt="Evolved Logo" class="logo">
+                <span class="brand">Evolved</span>
+            </div>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="tech-stack.html">Tech Stack</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="cost-estimator.html" class="active">Cost Estimator</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+            </ul>
+            <button class="theme-toggle" aria-label="Toggle theme">
+                <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="5"></circle>
+                    <line x1="12" y1="1" x2="12" y2="3"></line>
+                    <line x1="12" y1="21" x2="12" y2="23"></line>
+                    <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                    <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                    <line x1="1" y1="12" x2="3" y2="12"></line>
+                    <line x1="21" y1="12" x2="23" y2="12"></line>
+                    <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                    <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                </svg>
+                <svg class="moon-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
+                </svg>
+            </button>
+        </div>
+    </nav>
+
+    <section class="estimator-hero">
+        <div class="container">
+            <h1>Project Cost Estimator</h1>
+            <p>Get an instant estimate for your business automation project</p>
+        </div>
+    </section>
+
+    <section class="estimator-content">
+        <div class="container">
+            <div class="estimator-grid">
+                <div class="estimator-form">
+                    <h2>Project Details</h2>
+                    
+                    <div class="form-group">
+                        <label>Service Tier</label>
+                        <div class="radio-group">
+                            <label class="radio-option">
+                                <input type="radio" name="tier" value="quick" checked>
+                                <span class="radio-label">
+                                    <strong>Quick Fix</strong>
+                                    <small>1-2 targeted improvements</small>
+                                </span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="tier" value="optimization">
+                                <span class="radio-label">
+                                    <strong>Optimization</strong>
+                                    <small>Multiple workflow improvements</small>
+                                </span>
+                            </label>
+                            <label class="radio-option">
+                                <input type="radio" name="tier" value="overhaul">
+                                <span class="radio-label">
+                                    <strong>Complete Overhaul</strong>
+                                    <small>Full operational transformation</small>
+                                </span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Integration Needs</label>
+                        <div class="checkbox-group">
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="integration" value="ecommerce">
+                                <span>E-commerce Platforms (Shopify, Etsy, etc.)</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="integration" value="shipping">
+                                <span>Shipping & Logistics (Shippo, etc.)</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="integration" value="inventory">
+                                <span>Inventory Management</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="integration" value="accounting">
+                                <span>Accounting/Finance Systems</span>
+                            </label>
+                            <label class="checkbox-option">
+                                <input type="checkbox" name="integration" value="custom">
+                                <span>Custom Integrations</span>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="complexity">Project Complexity</label>
+                        <select id="complexity">
+                            <option value="simple">Simple - Basic automation</option>
+                            <option value="moderate" selected>Moderate - Standard business needs</option>
+                            <option value="complex">Complex - Advanced requirements</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="timeline">Desired Timeline</label>
+                        <select id="timeline">
+                            <option value="urgent">Urgent - Within 1 week</option>
+                            <option value="standard" selected>Standard - 2-4 weeks</option>
+                            <option value="flexible">Flexible - 1-2 months</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="training">
+                            Include team training and documentation
+                        </label>
+                    </div>
+
+                    <div class="form-group">
+                        <label>
+                            <input type="checkbox" id="support">
+                            Ongoing support (30 days)
+                        </label>
+                    </div>
+                </div>
+
+                <div class="estimator-result">
+                    <div class="result-card">
+                        <h2>Estimated Investment</h2>
+                        <div class="estimate-amount" id="estimate-amount">$0</div>
+                        <div class="estimate-range" id="estimate-range">Calculate your estimate</div>
+                        
+                        <div class="estimate-breakdown" id="estimate-breakdown">
+                            <h3>Cost Breakdown</h3>
+                            <div class="breakdown-item">
+                                <span>Base Service</span>
+                                <span id="base-cost">$0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Employee Scale</span>
+                                <span id="scale-cost">$0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Integrations</span>
+                                <span id="integration-cost">$0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Complexity</span>
+                                <span id="complexity-cost">$0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Timeline</span>
+                                <span id="timeline-cost">$0</span>
+                            </div>
+                            <div class="breakdown-item">
+                                <span>Add-ons</span>
+                                <span id="addons-cost">$0</span>
+                            </div>
+                        </div>
+
+                        <div class="estimate-note">
+                            <p><strong>Note:</strong> This is a rough estimate. Final pricing will be determined after a consultation to understand your specific needs.</p>
+                        </div>
+
+                        <button class="cta-button" onclick="window.location.href='index.html#contact'">
+                            Schedule Consultation
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Evolved</h4>
+                    <p>Streamlining business operations through technology and common sense.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Navigation</h4>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="tech-stack.html">Tech Stack</a></li>
+                        <li><a href="projects.html">Projects</a></li>
+                        <li><a href="cost-estimator.html">Cost Estimator</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Location</h4>
+                    <p>Mooresville, NC</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Evolved. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+    <script src="estimator.js"></script>
+</body>
+</html>
