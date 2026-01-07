@@ -18,7 +18,7 @@
                 <li><a href="index.html" class="active">Home</a></li>
                 <li><a href="tech-stack.html">Tech Stack</a></li>
                 <li><a href="projects.html">Projects</a></li>
-                <li><a href="cost-estimator.html">Cost Estimator</a></li>
+                <li><a href="why-us-over-ai.html">Why Us vs AI</a></li>
                 <li><a href="#contact">Contact</a></li>
             </ul>
             <button class="theme-toggle" aria-label="Toggle theme">
@@ -171,9 +171,45 @@
         <div class="container">
             <h2>Ready to Evolve?</h2>
             <p>Let's talk about how we can streamline your business operations.</p>
-            <button class="cta-button">Schedule a Consultation</button>
+            <button class="cta-button schedule-consult-btn" type="button">Schedule a Consultation</button>
         </div>
     </section>
+
+    <div class="modal-overlay" data-close-modal></div>
+    <div class="consult-modal" role="dialog" aria-modal="true" aria-labelledby="consultModalTitle">
+        <div class="modal-header">
+            <div>
+                <p class="eyebrow">Consultation Request</p>
+                <h3 id="consultModalTitle">Schedule a Consultation</h3>
+                <p class="modal-subtitle">Tell us a bit about your business and what you want to automate. We'll reach out shortly.</p>
+            </div>
+            <button class="modal-close" aria-label="Close modal">&times;</button>
+        </div>
+        <form id="consultation-form" class="modal-form">
+            <div class="modal-grid">
+                <label>
+                    <span>Full Name</span>
+                    <input type="text" name="name" placeholder="Your name" required>
+                </label>
+                <label>
+                    <span>Email</span>
+                    <input type="email" name="email" placeholder="you@example.com" required>
+                </label>
+                <label>
+                    <span>Company</span>
+                    <input type="text" name="company" placeholder="Company or team" required>
+                </label>
+                <label class="full-width">
+                    <span>What should we automate?</span>
+                    <textarea name="details" rows="4" placeholder="Tell us the repetitive online tasks slowing you down" required></textarea>
+                </label>
+            </div>
+            <div class="form-actions">
+                <button type="submit" class="cta-button submit-btn">Send Request</button>
+                <p class="form-status" role="status" aria-live="polite"></p>
+            </div>
+        </form>
+    </div>
 
     <footer id="contact">
         <div class="container">
@@ -188,7 +224,7 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="tech-stack.html">Tech Stack</a></li>
                         <li><a href="projects.html">Projects</a></li>
-                        <li><a href="cost-estimator.html">Cost Estimator</a></li>
+                        <li><a href="why-us-over-ai.html">Why Us vs AI</a></li>
                     </ul>
                 </div>
                 <div class="footer-section">
@@ -197,7 +233,7 @@
                 </div>
                 <div class="footer-section">
                     <h4>Connect</h4>
-                    <p>Email: qjzxv123@gmail.com</p>
+                    <p>Email: evolveteamaidan@gmail.com</p>
                 </div>
             </div>
             <div class="footer-bottom">

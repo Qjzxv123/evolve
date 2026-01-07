@@ -1322,3 +1322,433 @@ select:focus {
         position: static;
     }
 }
+
+/* Why Us vs AI Page */
+.ai-hero {
+    background: radial-gradient(circle at 20% 20%, rgba(0, 122, 204, 0.15), transparent 25%), 
+                radial-gradient(circle at 80% 0%, rgba(0, 122, 204, 0.12), transparent 25%),
+                linear-gradient(135deg, rgba(0, 122, 204, 0.15), rgba(0, 0, 0, 0.6));
+    padding: 5rem 0 4rem;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.ai-hero .container {
+    display: grid;
+    grid-template-columns: 1.3fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+}
+
+.ai-hero-content h1 {
+    font-size: 2.5rem;
+    margin: 0.6rem 0 1rem;
+    line-height: 1.3;
+}
+
+.hero-subtitle {
+    color: var(--text-muted);
+    max-width: 680px;
+    margin-bottom: 1.5rem;
+}
+
+.hero-cta {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.time-saver {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1rem 1.25rem;
+}
+
+.time-badge {
+    display: inline-block;
+    padding: 0.35rem 0.65rem;
+    border-radius: 999px;
+    background: rgba(0, 122, 204, 0.1);
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.ai-hero-points {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1rem;
+}
+
+.point-card {
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid var(--border-color);
+    border-radius: 12px;
+    padding: 1.2rem;
+}
+
+.point-card h3 {
+    margin-bottom: 0.5rem;
+}
+
+.point-card p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+.eyebrow {
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-weight: 700;
+    font-size: 0.8rem;
+    color: var(--primary);
+}
+
+.ai-grid {
+    padding: 4rem 0;
+}
+
+.grid-header h2 {
+    margin: 0.5rem 0 0.8rem;
+}
+
+.grid-header .section-subtitle {
+    max-width: 760px;
+}
+
+.grid-cards {
+    margin-top: 2rem;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+}
+
+.grid-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.5rem;
+}
+
+.grid-card h3 {
+    margin-bottom: 0.6rem;
+}
+
+.grid-card p {
+    color: var(--text-muted);
+}
+
+.ai-security {
+    padding: 4rem 0;
+    border-top: 1px solid var(--border-color);
+    border-bottom: 1px solid var(--border-color);
+    background: linear-gradient(180deg, rgba(0, 122, 204, 0.08), rgba(0, 0, 0, 0.2));
+}
+
+.security-content {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 2rem;
+    align-items: center;
+}
+
+.security-list {
+    margin-top: 1.2rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    color: var(--text-muted);
+}
+
+.security-list li {
+    padding-left: 1.4rem;
+    position: relative;
+}
+
+.security-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.6rem;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--primary);
+}
+
+.security-callout {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--primary);
+    border-radius: 14px;
+    padding: 1.5rem;
+}
+
+.security-callout p {
+    color: var(--text-muted);
+    margin-top: 0.5rem;
+}
+
+.ai-compare {
+    padding: 4rem 0;
+}
+
+.compare-header h2 {
+    margin: 0.5rem 0 0.8rem;
+}
+
+.compare-header .section-subtitle {
+    max-width: 700px;
+}
+
+.compare-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+    margin-top: 2rem;
+}
+
+.compare-card {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid var(--border-color);
+    border-radius: 14px;
+    padding: 1.5rem;
+}
+
+.compare-card.highlight {
+    border-color: var(--primary);
+    box-shadow: 0 10px 30px rgba(0, 122, 204, 0.2);
+}
+
+.compare-label {
+    display: inline-block;
+    padding: 0.35rem 0.7rem;
+    border-radius: 999px;
+    background: rgba(0, 122, 204, 0.1);
+    color: var(--primary);
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+}
+
+.compare-card ul {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+    color: var(--text-muted);
+    padding-left: 0;
+}
+
+.compare-card li {
+    position: relative;
+    padding-left: 1.4rem;
+}
+
+.compare-card li::before {
+    content: '•';
+    position: absolute;
+    left: 0;
+    color: var(--primary);
+}
+
+.ai-cta {
+    padding: 4rem 0;
+}
+
+.cta-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    background: linear-gradient(135deg, rgba(0, 122, 204, 0.15), rgba(0, 122, 204, 0.05));
+    border: 1px solid var(--primary);
+    border-radius: 18px;
+    padding: 2rem;
+}
+
+.cta-inner p {
+    color: var(--text-muted);
+    margin-top: 0.4rem;
+}
+
+@media (max-width: 968px) {
+    .ai-hero .container {
+        grid-template-columns: 1fr;
+    }
+
+    .ai-hero-points {
+        grid-template-columns: 1fr;
+    }
+
+    .grid-cards {
+        grid-template-columns: 1fr;
+    }
+
+    .security-content {
+        grid-template-columns: 1fr;
+    }
+
+    .compare-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .cta-inner {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+/* Consultation Modal */
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+    z-index: 900;
+}
+
+.consult-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -60%);
+    width: min(640px, 90vw);
+    background: var(--dark-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
+    z-index: 901;
+}
+
+.consult-modal.open {
+    opacity: 1;
+    visibility: visible;
+    transform: translate(-50%, -50%);
+}
+
+.modal-overlay.open {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1rem;
+    margin-bottom: 1rem;
+}
+
+.modal-header h3 {
+    margin: 0.3rem 0;
+}
+
+.modal-subtitle {
+    color: var(--text-muted);
+    max-width: 480px;
+}
+
+.modal-close {
+    background: rgba(255, 255, 255, 0.08);
+    border: 1px solid var(--border-color);
+    color: var(--text-light);
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-close:hover {
+    background: rgba(255, 255, 255, 0.12);
+}
+
+.modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.modal-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+}
+
+.modal-grid label {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    color: var(--text-light);
+    font-weight: 600;
+}
+
+.modal-grid input,
+.modal-grid textarea {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border-color);
+    border-radius: 10px;
+    color: var(--text-light);
+    font-size: 1rem;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.modal-grid input:focus,
+.modal-grid textarea:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 122, 204, 0.15);
+}
+
+.modal-grid textarea {
+    resize: vertical;
+}
+
+.modal-grid .full-width {
+    grid-column: 1 / -1;
+}
+
+.form-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.submit-btn {
+    padding-inline: 1.5rem;
+}
+
+.form-status {
+    color: var(--text-muted);
+    min-height: 1.2em;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+@media (max-width: 768px) {
+    .consult-modal {
+        padding: 1.25rem;
+    }
+
+    .modal-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modal-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}

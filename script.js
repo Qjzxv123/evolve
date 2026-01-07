@@ -29,16 +29,100 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
 });
 
 // CTA Button click handlers
-const ctaButtons = document.querySelectorAll('.cta-button');
+const ctaButtons = document.querySelectorAll('.cta-button:not(.schedule-consult-btn)');
 ctaButtons.forEach(button => {
     button.addEventListener('click', function() {
-        // Scroll to contact section or perform action
         const contactSection = document.querySelector('footer');
         if (contactSection) {
             contactSection.scrollIntoView({ behavior: 'smooth' });
         }
     });
 });
+
+// Consultation modal handling
+const modal = document.querySelector('.consult-modal');
+const modalOverlay = document.querySelector('.modal-overlay');
+const scheduleButtons = document.querySelectorAll('.schedule-consult-btn');
+const closeModalBtn = document.querySelector('.modal-close');
+const consultationForm = document.getElementById('consultation-form');
+const formStatus = document.querySelector('.form-status');
+
+const openModal = () => {
+    if (!modal || !modalOverlay) return;
+    modal.classList.add('open');
+    modalOverlay.classList.add('open');
+    document.body.classList.add('modal-open');
+    const firstInput = modal.querySelector('input, textarea');
+    if (firstInput) firstInput.focus();
+};
+
+const closeModal = () => {
+    if (!modal || !modalOverlay) return;
+    modal.classList.remove('open');
+    modalOverlay.classList.remove('open');
+    document.body.classList.remove('modal-open');
+};
+
+scheduleButtons.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal();
+    });
+});
+
+modalOverlay?.addEventListener('click', (e) => {
+    if (e.target === modalOverlay) closeModal();
+});
+
+closeModalBtn?.addEventListener('click', closeModal);
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && modal?.classList.contains('open')) {
+        closeModal();
+    }
+});
+
+if (consultationForm) {
+    consultationForm.addEventListener('submit', async (e) => {
+        e.preventDefault();
+        const formData = new FormData(consultationForm);
+        const payload = {
+            name: formData.get('name'),
+            email: formData.get('email'),
+            company: formData.get('company'),
+            details: formData.get('details'),
+            notifyEmail: 'evolveteamaidan@gmail.com',
+            notifySms: '8289998100'
+        };
+
+        if (formStatus) {
+            formStatus.textContent = 'Sending...';
+        }
+
+        try {
+            const response = await fetch('/api/consultation', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                throw new Error('Request failed');
+            }
+
+            if (formStatus) {
+                formStatus.textContent = 'Thanks! We received your request and will reach out shortly.';
+            }
+            consultationForm.reset();
+            setTimeout(() => closeModal(), 1200);
+        } catch (error) {
+            if (formStatus) {
+                formStatus.textContent = 'We could not send automatically. Please email us at evolveteamaidan@gmail.com and we will respond quickly.';
+            }
+            console.error('Consultation request failed', error);
+        }
+    });
+}
 
 // Enhanced scroll animations with multiple effects
 const observerOptions = {
