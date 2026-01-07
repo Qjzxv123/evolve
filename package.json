@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@supabase/supabase-js": "^2.45.2"
+    "@supabase/supabase-js": "^2.45.2",
+    "nodemailer": "^6.9.14"
   }
 }

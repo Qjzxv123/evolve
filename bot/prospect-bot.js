@@ -11,6 +11,8 @@ const FROM_NAME = process.env.OUTREACH_FROM_NAME || 'Outreach Bot';
 const REPLY_TO = process.env.OUTREACH_REPLY_TO || FROM_EMAIL;
 const DRY_RUN = (process.env.OUTREACH_DRY_RUN || 'true').toLowerCase() === 'true';
 const MAX_EMAILS = Number(process.env.OUTREACH_MAX_EMAILS || 5);
+const SEARCH_PROVIDER = (process.env.OUTREACH_SEARCH_PROVIDER || 'reddit').toLowerCase();
+const EMAIL_PROVIDER = (process.env.OUTREACH_EMAIL_PROVIDER || 'log').toLowerCase(); // log|sendgrid|smtp
 
 // Search + scraping setup
 const FORUM_SITES = [
@@ -32,6 +34,13 @@ const KEYWORDS = [
 
 const STATE_FILE = path.join(__dirname, 'prospect-state.json');
 const USER_AGENT = 'evolve-prospect-bot/1.0 (+contact: outreach)';
+const SMTP_CONFIG = {
+    host: process.env.SMTP_HOST,
+    port: process.env.SMTP_PORT ? Number(process.env.SMTP_PORT) : undefined,
+    secure: (process.env.SMTP_SECURE || 'false').toLowerCase() === 'true',
+    user: process.env.SMTP_USER,
+    pass: process.env.SMTP_PASS,
+};
 
 function assertFetch() {
     if (typeof fetch !== 'function') {
@@ -124,6 +133,29 @@ async function searchSerp(keyword) {
         .filter((item) => Boolean(item.link));
 }
 
+async function searchReddit(keyword) {
+    const query = encodeURIComponent(keyword);
+    const url = `https://www.reddit.com/r/smallbusiness/search.json?q=${query}&restrict_sr=1&sort=new&limit=12`;
+    const response = await fetch(url, {
+        headers: {
+            'User-Agent': USER_AGENT,
+        },
+    });
+    if (!response.ok) {
+        throw new Error(`Reddit search failed (${response.status}) for "${keyword}"`);
+    }
+    const data = await response.json();
+    const children = (data.data && data.data.children) || [];
+    return children
+        .map((child) => child.data)
+        .filter(Boolean)
+        .map((post) => ({
+            link: `https://www.reddit.com${post.permalink}`,
+            title: post.title,
+            snippet: post.selftext || post.selftext_html || '',
+        }));
+}
+
 async function scrapeLead(link) {
     try {
         const response = await fetch(link, {
@@ -149,7 +181,8 @@ async function gatherLeads(state) {
     const leads = [];
 
     for (const keyword of KEYWORDS) {
-        const searchResults = await searchSerp(keyword);
+        const searchResults =
+            SEARCH_PROVIDER === 'serpapi' ? await searchSerp(keyword) : await searchReddit(keyword);
 
         for (const result of searchResults) {
             if (state.contacted[result.link]) {
@@ -200,49 +233,92 @@ function buildEmail(lead) {
 }
 
 async function sendEmail(to, content) {
-    ensureEnv(SENDGRID_API_KEY, 'SENDGRID_API_KEY');
     ensureEnv(FROM_EMAIL, 'OUTREACH_FROM_EMAIL');
 
-    const body = {
-        personalizations: [
-            {
-                to: [{ email: to }],
-                subject: content.subject,
+    if (EMAIL_PROVIDER === 'sendgrid') {
+        ensureEnv(SENDGRID_API_KEY, 'SENDGRID_API_KEY');
+        const body = {
+            personalizations: [
+                {
+                    to: [{ email: to }],
+                    subject: content.subject,
+                },
+            ],
+            from: {
+                email: FROM_EMAIL,
+                name: FROM_NAME,
             },
-        ],
-        from: {
-            email: FROM_EMAIL,
-            name: FROM_NAME,
-        },
-        reply_to: REPLY_TO ? { email: REPLY_TO } : undefined,
-        content: [
-            { type: 'text/plain', value: content.textBody },
-            { type: 'text/html', value: content.htmlBody },
-        ],
-    };
+            reply_to: REPLY_TO ? { email: REPLY_TO } : undefined,
+            content: [
+                { type: 'text/plain', value: content.textBody },
+                { type: 'text/html', value: content.htmlBody },
+            ],
+        };
 
-    const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${SENDGRID_API_KEY}`,
-            'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(body),
-    });
+        const response = await fetch('https://api.sendgrid.com/v3/mail/send', {
+            method: 'POST',
+            headers: {
+                Authorization: `Bearer ${SENDGRID_API_KEY}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(body),
+        });
 
-    if (!response.ok) {
-        const message = await response.text();
-        throw new Error(`SendGrid error (${response.status}): ${message}`);
+        if (!response.ok) {
+            const message = await response.text();
+            throw new Error(`SendGrid error (${response.status}): ${message}`);
+        }
+        return;
     }
+
+    if (EMAIL_PROVIDER === 'smtp') {
+        const nodemailer = require('nodemailer');
+        ensureEnv(SMTP_CONFIG.host, 'SMTP_HOST');
+        ensureEnv(SMTP_CONFIG.port, 'SMTP_PORT');
+        ensureEnv(SMTP_CONFIG.user, 'SMTP_USER');
+        ensureEnv(SMTP_CONFIG.pass, 'SMTP_PASS');
+
+        const transporter = nodemailer.createTransport({
+            host: SMTP_CONFIG.host,
+            port: SMTP_CONFIG.port,
+            secure: SMTP_CONFIG.secure,
+            auth: {
+                user: SMTP_CONFIG.user,
+                pass: SMTP_CONFIG.pass,
+            },
+        });
+
+        await transporter.sendMail({
+            from: `"${FROM_NAME}" <${FROM_EMAIL}>`,
+            to,
+            replyTo: REPLY_TO,
+            subject: content.subject,
+            text: content.textBody,
+            html: content.htmlBody,
+        });
+        return;
+    }
+
+    // Fallback: log-only (useful for free/local testing)
+    console.log('[LOG-ONLY EMAIL]', { to, subject: content.subject, body: content.textBody });
 }
 
 async function run() {
     assertFetch();
-    ensureEnv(SERP_API_KEY, 'SERPAPI_API_KEY');
+    if (SEARCH_PROVIDER === 'serpapi') {
+        ensureEnv(SERP_API_KEY, 'SERPAPI_API_KEY');
+    }
 
-    if (!DRY_RUN) {
+    if (!DRY_RUN && EMAIL_PROVIDER === 'sendgrid') {
         ensureEnv(SENDGRID_API_KEY, 'SENDGRID_API_KEY');
         ensureEnv(FROM_EMAIL, 'OUTREACH_FROM_EMAIL');
+    }
+    if (!DRY_RUN && EMAIL_PROVIDER === 'smtp') {
+        ensureEnv(FROM_EMAIL, 'OUTREACH_FROM_EMAIL');
+        ensureEnv(SMTP_CONFIG.host, 'SMTP_HOST');
+        ensureEnv(SMTP_CONFIG.port, 'SMTP_PORT');
+        ensureEnv(SMTP_CONFIG.user, 'SMTP_USER');
+        ensureEnv(SMTP_CONFIG.pass, 'SMTP_PASS');
     }
 
     const state = await readState();
