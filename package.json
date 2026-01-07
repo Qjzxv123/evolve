@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "private": true,
   "dependencies": {
-    "@sendgrid/mail": "^7.7.0",
-    "twilio": "^4.19.0"
+    "@supabase/supabase-js": "^2.45.2"
   }
 }

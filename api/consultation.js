@@ -1,5 +1,4 @@
-const sgMail = require('@sendgrid/mail');
-const twilio = require('twilio');
+const { createClient } = require('@supabase/supabase-js');
 
 const requiredFields = ['name', 'email', 'company', 'details'];
 
@@ -24,43 +23,25 @@ module.exports = async function handler(req, res) {
         return res.status(400).json({ error: 'Missing required fields', missing });
     }
 
-    const mailTo = process.env.MAIL_TO || 'evolveteamaidan@gmail.com';
-    const mailFrom = process.env.MAIL_FROM || process.env.MAIL_TO || 'noreply@evolve.local';
-    const smsTo = process.env.ALERT_SMS_TO || '8289998100';
-    const {
-        SENDGRID_API_KEY,
-        TWILIO_ACCOUNT_SID,
-        TWILIO_AUTH_TOKEN,
-        TWILIO_FROM,
-    } = process.env;
+    const { SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY } = process.env;
+    if (!SUPABASE_URL || !SUPABASE_SERVICE_ROLE_KEY) {
+        return res.status(500).json({ error: 'Supabase credentials not configured' });
+    }
+
+    const supabase = createClient(SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY);
 
     try {
-        if (!SENDGRID_API_KEY) {
-            throw new Error('SENDGRID_API_KEY missing');
-        }
-
-        sgMail.setApiKey(SENDGRID_API_KEY);
-        await sgMail.send({
-            to: mailTo,
-            from: mailFrom,
-            replyTo: email,
-            subject: `New Consultation Request from ${name}`,
-            text: [
-                `Name: ${name}`,
-                `Email: ${email}`,
-                `Company: ${company}`,
-                `Details: ${details}`,
-            ].join('\n'),
-        });
-
-        if (TWILIO_ACCOUNT_SID && TWILIO_AUTH_TOKEN && TWILIO_FROM) {
-            const client = twilio(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN);
-            const smsBody = `Consultation request - ${name} (${email}, ${company}): ${details}`;
-            await client.messages.create({
-                body: smsBody.slice(0, 1500),
-                from: TWILIO_FROM,
-                to: smsTo,
+        const { error } = await supabase
+            .from('consultations')
+            .insert({
+                name,
+                email,
+                company,
+                details,
             });
+
+        if (error) {
+            throw error;
         }
 
         return res.status(200).json({ ok: true });
